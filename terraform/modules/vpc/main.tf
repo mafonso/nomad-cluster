@@ -22,11 +22,10 @@ resource "aws_eip" "nat-gw" {
     vpc = true
 }
 
-
 resource "aws_nat_gateway" "default" {
   count         = "${length(split(",", lookup(var.azs, var.region)))}"
   allocation_id = "${element(aws_eip.nat-gw.*.id,count.index)}"
-  subnet_id     = "${cidrsubnet(cidrsubnet(var.cidr_block, 4, 1), 4, count.index)}"
+  subnet_id     = "${element(aws_subnet.private-subnet.*.id,count.index)}"
 
   depends_on = ["aws_internet_gateway.default"]
 }
@@ -48,8 +47,23 @@ resource "aws_route_table" "private_rt" {
     count   = "${length(split(",", lookup(var.azs, var.region)))}"
     vpc_id  = "${aws_vpc.default.id}"
   route {
-    cidr_block = "${cidrsubnet(cidrsubnet(var.cidr_block, 4, 1), 4, count.index)}"
+    cidr_block = "0.0.0.0/0"
     nat_gateway_id = "${element(aws_nat_gateway.default.*.id,count.index)}"
+  }
+}
+
+resource "aws_route_table_association" "private_rta" {
+  count   = "${length(split(",", lookup(var.azs, var.region)))}"
+  subnet_id = "${element(aws_subnet.private-subnet.*.id,count.index)}"
+  route_table_id = "${element(aws_route_table.private_rt.*.id, count.index)}"
+}
+
+
+resource "aws_route_table" "public_rt" {
+    vpc_id  = "${aws_vpc.default.id}"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = "${element(aws_internet_gateway.default.*.id,count.index)}"
   }
 }
 
@@ -66,4 +80,8 @@ resource "aws_subnet" "public-subnet" {
     }
 }
 
-
+resource "aws_route_table_association" "public_rta" {
+  count   = "${length(split(",", lookup(var.azs, var.region)))}"
+  subnet_id = "${element(aws_subnet.public-subnet.*.id,count.index)}"
+  route_table_id = "${aws_route_table.public_rt.id}"
+}
