@@ -1,5 +1,4 @@
 variable "name" {
-  default = "ACME"
 }
 
 variable "region" {
@@ -9,7 +8,6 @@ variable "key_name" {
 }
 
 variable "cidr_block" {
-  default = "10.8.0.0/20"
 }
 
 variable "azs" {
