@@ -1,0 +1,21 @@
+consul_version: 0.6.4
+
+consul_server: false
+consul_bootstrap_expect: null
+
+consul_web_ui: true
+consul_domain: consul
+consul_log_level: info
+
+consul_client_address: 0.0.0.0
+consul_encrypt: null
+
+consul_atlas_infrastructure: null
+consul_atlas_join: false
+consul_atlas_token: null
+
+consul_leave_on_terminate: true
+consul_skip_leave_on_interrupt: null
+consul_rejoin_after_leave: null
+
+consul_with_dnsmasq: false
