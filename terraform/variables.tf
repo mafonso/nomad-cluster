@@ -1,4 +1,5 @@
-variable "vpc_name" {}
+variable "project" {}
+variable "environment" {}
 variable "region" {}
 variable "cidr_block" {}
-variable "key_name" {}
+variable "keypair_name" {}

@@ -1,14 +1,9 @@
-variable "name" {
-}
+variable "project" {}
+variable "environment" {}
+variable "region" {}
+variable "keypair_name" {}
 
-variable "region" {
-}
-
-variable "key_name" {
-}
-
-variable "cidr_block" {
-}
+variable "cidr_block" {}
 
 variable "azs" {
     default = {
