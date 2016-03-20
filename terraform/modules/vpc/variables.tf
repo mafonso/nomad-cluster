@@ -1,7 +1,7 @@
 variable "project" {}
 variable "environment" {}
 variable "region" {}
-variable "keypair_name" {}
+variable "key_name" {}
 
 variable "cidr_block" {}
 

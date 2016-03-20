@@ -1,4 +1,4 @@
-output "id" {
+output "vpc_id" {
   value = "${aws_vpc.default.id}"
 }
 
@@ -14,10 +14,18 @@ output "default_network_acl_id" {
   value = "${aws_vpc.default.default_network_acl_id}"
 }
 
-output "public_subnets" {
+output "public_subnet_ids" {
   value = "${join(",",aws_subnet.public-subnet.*.id)}"
 }
 
-output "private_subnets" {
+output "private_subnet_ids" {
   value = "${join(",",aws_subnet.private-subnet.*.id)}"
+}
+
+output "public_subnet_cidrs" {
+  value = "${join(",",aws_subnet.public-subnet.*.cidr_block)}"
+}
+
+output "private_subnet_cidrs" {
+  value = "${join(",",aws_subnet.private-subnet.*.cidr_block)}"
 }
