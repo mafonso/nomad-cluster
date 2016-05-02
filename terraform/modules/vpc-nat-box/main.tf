@@ -26,26 +26,37 @@ resource "aws_internet_gateway" "default" {
   }
 }
 
-resource "aws_eip" "nat-gw" {
-  count = "${length(split(",", lookup(var.azs, var.region)))}"
-  vpc   = true
+resource "atlas_artifact" "nat" {
+  name  = "acme/nat"
+  type  = "amazon.image"
+  build = "latest"
+
+  metadata {
+    region = "${var.region}"
+  }
 }
 
 resource "aws_instance" "nat" {
   count                       = "${length(split(",", lookup(var.azs, var.region)))}"
-  ami                         = "ami-30913f47"                                           # this is a special ami preconfigured to do NAT
-  instance_type               = "t1.micro"
+  ami                         = "${atlas_artifact.nat.metadata_full.ami_id}"
+  instance_type               = "t2.micro"
   key_name                    = "${var.key_name}"
-  subnet_id                   = "${element(aws_subnet.private-subnet.*.id,count.index)}"
+  subnet_id                   = "${element(aws_subnet.public-subnet.*.id,count.index)}"
   associate_public_ip_address = true
   source_dest_check           = false
 
   tags {
-    name        = "${var.project}-${var.environment}-nat"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}-nat"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
+}
+
+resource "aws_eip" "nat-eip" {
+  count    = "${length(split(",", lookup(var.azs, var.region)))}"
+  instance = "${element(aws_instance.nat.*.id,count.index)}"
+  vpc      = true
 }
 
 resource "aws_subnet" "private-subnet" {

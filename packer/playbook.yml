@@ -1,0 +1,21 @@
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: gather ec2 facts
+      action: ec2_facts
+      tags:
+        - always
+  roles:
+    - common
+    
+
+- hosts: nat 
+  become: yes
+  roles:
+    - nat
+
+- hosts: consul 
+  become: yes
+  roles:
+    - consul
+    - dnsmasq

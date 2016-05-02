@@ -1,0 +1,4 @@
+- name: Install ufw
+  apt: name=ufw
+- name: Set ufw policy
+  ufw: state=enabled direction=incoming policy=deny

@@ -54,6 +54,9 @@ variable "min_size" {
 variable "max_size" {
 }
 
+variable "desired_capacity" {
+}
+
 variable "health_check_grace_period" {
   default = "300"
 }

@@ -42,6 +42,7 @@ resource "aws_autoscaling_group" "asg" {
   name                      = "asg-${var.environment}-${var.role}"
   max_size                  = "${var.max_size}"
   min_size                  = "${var.min_size}"
+  desired_capacity          = "${var.desired_capacity}"
   launch_configuration      = "${aws_launch_configuration.lc.id}"
   health_check_grace_period = "${var.health_check_grace_period}"
   health_check_type         = "${var.health_check_type}"
