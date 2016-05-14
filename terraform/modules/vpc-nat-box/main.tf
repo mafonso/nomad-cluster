@@ -26,10 +26,16 @@ resource "aws_internet_gateway" "default" {
   }
 }
 
+resource "aws_eip" "nat-eip" {
+  count    = "${length(split(",", lookup(var.azs, var.region)))}"
+  instance = "${element(aws_instance.nat.*.id,count.index)}"
+  vpc      = true
+}
+
 resource "atlas_artifact" "nat" {
-  name  = "acme/nat"
-  type  = "amazon.image"
-  build = "latest"
+  name    = "acme/nat"
+  type    = "amazon.image"
+  version = "latest"
 
   metadata {
     region = "${var.region}"
@@ -51,12 +57,6 @@ resource "aws_instance" "nat" {
     Environment = "${var.environment}"
     Managed_by  = "terraform"
   }
-}
-
-resource "aws_eip" "nat-eip" {
-  count    = "${length(split(",", lookup(var.azs, var.region)))}"
-  instance = "${element(aws_instance.nat.*.id,count.index)}"
-  vpc      = true
 }
 
 resource "aws_subnet" "private-subnet" {

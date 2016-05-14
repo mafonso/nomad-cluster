@@ -4,11 +4,11 @@
     "aws_secret_key"    : "",
     "aws_region"        : "eu-west-1",
     "aws_build_regions" : "eu-west-1",
-    "aws_source_ami"    : "ami-9f388eec", 
+    "aws_source_ami"    : "ami-7abd0209", 
     "aws_instance_type" : "t2.micro",
     "aws_vpc_id"        : "",
     "aws_subnet_id"     : "",
-    "ssh_username"      : "ubuntu"
+    "ssh_username"      : "centos"
   },
   "builders": [
   {

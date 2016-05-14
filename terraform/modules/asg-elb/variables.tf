@@ -1,29 +1,18 @@
-variable "project" {
-}
+variable "project" {}
 
-variable "environment" {
-}
+variable "environment" {}
 
-variable "region" {
-}
+variable "region" {}
 
-variable "key_name" {
-}
+variable "key_name" {}
 
-variable "vpc_id" {
-}
+variable "vpc_id" {}
 
-variable "role" {
-}
+variable "role" {}
 
-variable "ami" {
-}
+variable "instance_type" {}
 
-variable "instance_type" {
-}
-
-variable "security_groups" {
-}
+variable "security_groups" {}
 
 variable "enable_monitoring" {
   default = "false"
@@ -45,17 +34,13 @@ variable "volume_delete_on_termination" {
   default = "true"
 }
 
-variable "subnets" {
-}
+variable "subnets" {}
 
-variable "min_size" {
-}
+variable "min_size" {}
 
-variable "max_size" {
-}
+variable "max_size" {}
 
-variable "desired_capacity" {
-}
+variable "desired_capacity" {}
 
 variable "health_check_grace_period" {
   default = "300"

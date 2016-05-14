@@ -1,4 +1,15 @@
+---
 - name: install unzip
-  apt: pkg=unzip state=present
-  tags:
-    - install
+  yum: name=unzip state=latest
+
+- name: Install seed-environment service
+  copy: src=seed-environment.service dest=/etc/systemd/system/seed-environment.service
+
+- name: Install seed-environment target
+  copy: src=seed-environment.target dest=/etc/systemd/system/seed-environment.target
+
+- name: Copy seed-environment script
+  copy: src=seed-environment.py dest=/usr/local/bin/seed-environment.py mode=0755
+
+- name: Enable seed-environment service
+  service: name=seed-environment enabled=yes

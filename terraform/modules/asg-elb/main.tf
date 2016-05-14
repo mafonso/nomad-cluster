@@ -20,26 +20,55 @@ resource "aws_security_group" "sg_asg" {
     environment = "${var.environment}"
     managed_by  = "terraform"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "atlas_artifact" "ami" {
+  name    = "acme/${var.role}"
+  type    = "amazon.image"
+  version = "latest"
+
+  metadata {
+    region = "${var.region}"
+  }
+}
+
+resource "template_file" "user_data" {
+  template = "${file("templates/userdata.tpl")}"
+
+  vars {
+    role                        = "${var.role}"
+    project                     = "${var.project}"
+    environment                 = "${var.environment}"
+  }
 }
 
 resource "aws_launch_configuration" "lc" {
   name_prefix       = "${var.role}"
-  image_id          = "${var.ami}"
+  image_id          = "${atlas_artifact.ami.metadata_full.ami_id}"
   instance_type     = "${var.instance_type}"
   key_name          = "${var.key_name}"
   security_groups   = ["${aws_security_group.sg_asg.id}", "${var.security_groups}"]
   enable_monitoring = "${var.enable_monitoring}"
   ebs_optimized     = "${var.ebs_optimized}"
+  user_data         = "${template_file.user_data.rendered}"
 
   root_block_device {
     volume_type           = "${var.volume_type}"
     volume_size           = "${var.volume_size}"
     delete_on_termination = "${var.volume_delete_on_termination}"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_autoscaling_group" "asg" {
-  name                      = "asg-${var.environment}-${var.role}"
+  name                      = "${var.project}-${var.environment}-${var.role}"
   max_size                  = "${var.max_size}"
   min_size                  = "${var.min_size}"
   desired_capacity          = "${var.desired_capacity}"
@@ -57,7 +86,7 @@ resource "aws_autoscaling_group" "asg" {
 
   tag {
     key                 = "managed_by"
-    value               = "autoscaling"
+    value               = "terraform"
     propagate_at_launch = true
   }
 

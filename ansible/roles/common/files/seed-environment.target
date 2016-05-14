@@ -1,0 +1,3 @@
+[Unit]
+Description=/etc/environment available and hostname set
+Requires=seed-environment.service

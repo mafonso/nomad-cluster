@@ -1,4 +1,0 @@
-- name: install dnsmasq
-  apt: pkg=dnsmasq state=present
-  tags:
-    - install

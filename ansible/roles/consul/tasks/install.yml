@@ -1,22 +1,24 @@
-- name: download consul
+---
+- name: Download consul
   get_url: url=https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip dest=/usr/local/src/consul.zip
 
-- name: install consul
-  unarchive: src=/usr/local/src/consul.zip  dest=/usr/local/bin
-  args:
-    creates: /usr/local/bin/consul
+- name: Install consul
+  unarchive: src=/usr/local/src/consul.zip  dest=/usr/local/bin creates=/usr/local/bin/consul
 
-- name: ensure user
+- name: Ensure user
   user: name=consul home=/var/lib/consul shell=/bin/false createhome=no
 
-- name: ensure config directory
+- name: Ensure config directory
   file: path=/etc/consul/conf.d state=directory
 
-- name: ensure state directories
+- name: Ensure state directories
   file: path={{ item }} owner=consul group=consul state=directory
   with_items:
     - /var/lib/consul
     - /var/log/consul
 
-- name: copy launch script
-  copy: src=consul.conf dest=/etc/init/consul.conf
+- name: Copy launch script
+  copy: src=consul.service dest=/etc/systemd/system/consul.service
+
+- name: Enable consul service
+  service: name=consul enabled=yes

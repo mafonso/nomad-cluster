@@ -1,3 +1,4 @@
+---
 - hosts: all
   become: yes
   pre_tasks:
@@ -8,7 +9,6 @@
   roles:
     - common
     
-
 - hosts: nat 
   become: yes
   roles:
@@ -16,6 +16,10 @@
 
 - hosts: consul 
   become: yes
+  vars: 
+    - consul_server: true
+    - consul_atlas_join: true
+    - consul_web_ui: true
+    - consul_with_dnsmasq: true
   roles:
     - consul
-    - dnsmasq

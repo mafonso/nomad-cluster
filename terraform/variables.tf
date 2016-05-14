@@ -1,14 +1,9 @@
-variable "project" {
-}
+variable "project" {}
 
-variable "environment" {
-}
+variable "environment" {}
 
-variable "region" {
-}
+variable "region" {}
 
-variable "cidr_block" {
-}
+variable "cidr_block" {}
 
-variable "key_name" {
-}
+variable "key_name" {}

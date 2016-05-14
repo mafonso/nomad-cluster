@@ -12,31 +12,20 @@ module "vpc" {
   key_name    = "${var.key_name}"
 }
 
-resource "atlas_artifact" "consul" {
-  name  = "acme/consul"
-  type  = "amazon.image"
-  build = "latest"
-
-  metadata {
-    region = "${var.region}"
-  }
-}
-
-module "consul-cluster" {
+module "consul" {
   source = "modules/asg-elb"
 
-  project     = "${var.project}"
-  environment = "${var.environment}"
-  region      = "${var.region}"
-  key_name    = "${var.key_name}"
-  role        = "consul-cluster"
+  role                 = "consul"
+  project              = "${var.project}"
+  environment          = "${var.environment}"
+  region               = "${var.region}"
+  key_name             = "${var.key_name}"
+  role                 = "consul"
 
   vpc_id          = "${module.vpc.vpc_id}"
   subnets         = "${module.vpc.private_subnet_ids}"
   security_groups = "${module.vpc.default_security_group_id}"
-
-  ami           = "${atlas_artifact.consul.metadata_full.ami_id}"
-  instance_type = "t2.micro"
+  instance_type   = "t2.micro"
 
   min_size         = 1
   max_size         = 3

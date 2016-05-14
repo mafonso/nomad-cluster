@@ -1,0 +1,13 @@
+[Unit]
+Description=Seed /etc/environment from cloud-config and S3 bucket
+After=network.target syslog.target cloud-config.target
+Requires=cloud-config.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/seed-environment.py
+RemainAfterExit=yes
+TimeoutSec=0
+
+[Install]
+WantedBy=multi-user.target
