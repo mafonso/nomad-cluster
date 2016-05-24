@@ -12,6 +12,8 @@ variable "role" {}
 
 variable "instance_type" {}
 
+variable "iam_instance_profile" {}
+
 variable "security_groups" {}
 
 variable "enable_monitoring" {

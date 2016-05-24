@@ -27,6 +27,15 @@ module "vpc" {
   key_name    = "${var.key_name}"
 }
 
+module "consul_role" {
+  source = "modules/iam/roles/base"
+
+  project     = "${var.project}"
+  environment = "${var.environment}"
+  role        = "consul"
+  policy_list = "s3-config-bucket,s3-read-all"
+}
+
 module "consul" {
   source = "modules/asg-elb"
 
@@ -36,10 +45,11 @@ module "consul" {
   region      = "${var.region}"
   key_name    = "${var.key_name}"
 
-  vpc_id          = "${module.vpc.vpc_id}"
-  subnets         = "${module.vpc.private_subnet_ids}"
-  security_groups = "${module.vpc.default_security_group_id}"
-  instance_type   = "t2.micro"
+  vpc_id               = "${module.vpc.vpc_id}"
+  subnets              = "${module.vpc.private_subnet_ids}"
+  security_groups      = "${module.vpc.default_security_group_id}"
+  instance_type        = "t2.micro"
+  iam_instance_profile = "s3"
 
   min_size         = 1
   max_size         = 3

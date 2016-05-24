@@ -16,6 +16,3 @@ This is a sample project that demostrate how to build a distributed platform to 
 
 * [Packer]() is used to build [AMIs](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) for the different instance roles using [Ansible](https://www.ansible.com/) as a provisioning tool.
 
-
-## Design principles
-

@@ -51,14 +51,15 @@ resource "template_file" "user_data" {
 }
 
 resource "aws_launch_configuration" "lc" {
-  name_prefix       = "${var.role}"
-  image_id          = "${atlas_artifact.ami.metadata_full.ami_id}"
-  instance_type     = "${var.instance_type}"
-  key_name          = "${var.key_name}"
-  security_groups   = ["${aws_security_group.sg_asg.id}", "${var.security_groups}"]
-  enable_monitoring = "${var.enable_monitoring}"
-  ebs_optimized     = "${var.ebs_optimized}"
-  user_data         = "${template_file.user_data.rendered}"
+  name_prefix          = "${var.role}"
+  image_id             = "${atlas_artifact.ami.metadata_full.ami_id}"
+  instance_type        = "${var.instance_type}"
+  key_name             = "${var.key_name}"
+  security_groups      = ["${aws_security_group.sg_asg.id}", "${var.security_groups}"]
+  enable_monitoring    = "${var.enable_monitoring}"
+  ebs_optimized        = "${var.ebs_optimized}"
+  user_data            = "${template_file.user_data.rendered}"
+  iam_instance_profile = "${var.iam_instance_profile}"
 
   root_block_device {
     volume_type           = "${var.volume_type}"
