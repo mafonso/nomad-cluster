@@ -5,7 +5,7 @@ Requires=cloud-config.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/local/bin/seed-environment.py
+ExecStart=/usr/local/bin/etc-environment.py
 RemainAfterExit=yes
 TimeoutSec=0
 

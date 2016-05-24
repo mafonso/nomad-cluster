@@ -1,3 +1,5 @@
+variable "organization" {}
+
 variable "project" {}
 
 variable "environment" {}

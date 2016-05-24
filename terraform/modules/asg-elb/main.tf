@@ -40,9 +40,13 @@ resource "template_file" "user_data" {
   template = "${file("templates/userdata.tpl")}"
 
   vars {
-    role                        = "${var.role}"
-    project                     = "${var.project}"
-    environment                 = "${var.environment}"
+    role        = "${var.role}"
+    project     = "${var.project}"
+    environment = "${var.environment}"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
