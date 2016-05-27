@@ -21,6 +21,7 @@
     - consul_atlas_join: true
     - consul_web_ui: true
     - consul_with_dnsmasq: true
-    - consul_atlas_infrastructure: "{{ lookup('env','ATLAS_INFRASTRUCTURE') }}"
+    - consul_bootstrap_expect: 3
+    - consul_atlas_infrastructure: "acme/sandbox"
   roles:
     - consul
