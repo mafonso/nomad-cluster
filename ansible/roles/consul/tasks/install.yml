@@ -1,9 +1,6 @@
 ---
-- name: Download consul
-  get_url: url=https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip dest=/usr/local/src/consul.zip
-
 - name: Install consul
-  unarchive: src=/usr/local/src/consul.zip  dest=/usr/local/bin creates=/usr/local/bin/consul
+  unarchive: src=https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip dest=/usr/local/bin creates=/usr/local/bin/consul copy=no
 
 - name: Ensure user
   user: name=consul home=/var/lib/consul shell=/bin/false createhome=no
