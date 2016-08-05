@@ -23,10 +23,9 @@ resource "aws_iam_instance_profile" "instance_profile" {
   roles = ["${aws_iam_role.role.name}"]
 }
 
-
 resource "aws_iam_role_policy" "policy" {
   count = "${length(split(",",var.policy_list))}"
-  name = "${element(split(",",var.policy_list),count.index)}"
+  name  = "${element(split(",",var.policy_list),count.index)}"
 
   role = "${aws_iam_role.role.id}"
 

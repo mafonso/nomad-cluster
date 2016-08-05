@@ -32,7 +32,7 @@ resource "aws_eip" "nat-eip" {
   vpc      = true
 }
 
-resource "atlas_artifact" "nat" {
+data "atlas_artifact" "nat" {
   name    = "acme/nat"
   type    = "amazon.image"
   version = "latest"
@@ -44,7 +44,7 @@ resource "atlas_artifact" "nat" {
 
 resource "aws_instance" "nat" {
   count                       = "${length(split(",", lookup(var.azs, var.region)))}"
-  ami                         = "${atlas_artifact.nat.metadata_full.ami_id}"
+  ami                         = "${data.atlas_artifact.nat.metadata_full.ami_id}"
   instance_type               = "t2.micro"
   key_name                    = "${var.key_name}"
   subnet_id                   = "${element(aws_subnet.public-subnet.*.id,count.index)}"
