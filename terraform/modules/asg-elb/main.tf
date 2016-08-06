@@ -48,7 +48,7 @@ module "iam_profile" {
   role        = "${var.role}"
   project     = "${var.project}"
   environment = "${var.environment}"
-  policy_list = "${var.iam_instance_profile}"
+  policy_list = ["${var.iam_instance_profile}"]
 }
 
 resource "aws_launch_configuration" "lc" {
@@ -82,7 +82,7 @@ resource "aws_autoscaling_group" "asg" {
   health_check_grace_period = "${var.health_check_grace_period}"
   health_check_type         = "${var.health_check_type}"
   force_delete              = "${var.force_delete}"
-  vpc_zone_identifier       = ["${split(",",var.subnets)}"]
+  vpc_zone_identifier       = ["${var.subnets}"]
 
   tag {
     key                 = "Environment"

@@ -36,7 +36,9 @@ variable "volume_delete_on_termination" {
   default = "true"
 }
 
-variable "subnets" {}
+variable "subnets" {
+  type = "list"
+}
 
 variable "min_size" {}
 

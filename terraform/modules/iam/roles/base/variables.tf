@@ -4,4 +4,6 @@ variable "environment" {}
 
 variable "role" {}
 
-variable "policy_list" {}
+variable "policy_list" {
+  type = "list"
+}
