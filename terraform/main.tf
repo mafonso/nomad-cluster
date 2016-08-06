@@ -23,6 +23,7 @@ module "vpc" {
   project     = "${var.project}"
   environment = "${var.environment}"
   region      = "${var.region}"
+  az_count    = 3
   cidr_block  = "${var.cidr_block}"
   key_name    = "${var.key_name}"
 }

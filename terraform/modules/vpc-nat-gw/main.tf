@@ -27,12 +27,14 @@ resource "aws_internet_gateway" "default" {
 }
 
 resource "aws_eip" "nat-gw" {
-  count = "${length(var.azs[var.region])}"
+  count = "${var.az_count}"
   vpc   = true
 }
 
+data "aws_availability_zones" "azs" {}
+
 resource "aws_nat_gateway" "default" {
-  count         = "${length(var.azs[var.region])}"
+  count         = "${var.az_count}"
   allocation_id = "${element(aws_eip.nat-gw.*.id,count.index)}"
   subnet_id     = "${element(aws_subnet.private-subnet.*.id,count.index)}"
 
@@ -41,20 +43,20 @@ resource "aws_nat_gateway" "default" {
 
 resource "aws_subnet" "private-subnet" {
   vpc_id                  = "${aws_vpc.default.id}"
-  count                   = "${length(var.azs[var.region])}"
+  count                   = "${var.az_count}"
   cidr_block              = "${cidrsubnet(cidrsubnet(var.cidr_block, 4, 1), 4, count.index)}"
-  availability_zone       = "${element(var.azs[var.region], count.index)}"
+  availability_zone       = "${data.aws_availability_zones.azs.names[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
-    Name        = "private-${element(var.azs[var.region], count.index)}"
+    Name        = "private-${data.aws_availability_zones.azs.names[count.index]}"
     Project     = "${var.project}"
     Environment = "${var.environment}"
   }
 }
 
 resource "aws_route_table" "private_rt" {
-  count  = "${length(var.azs[var.region])}"
+  count  = "${var.az_count}"
   vpc_id = "${aws_vpc.default.id}"
 
   route {
@@ -71,7 +73,7 @@ resource "aws_route_table" "private_rt" {
 }
 
 resource "aws_route_table_association" "private_rta" {
-  count          = "${length(var.azs[var.region])}"
+  count          = "${var.az_count}"
   subnet_id      = "${element(aws_subnet.private-subnet.*.id,count.index)}"
   route_table_id = "${element(aws_route_table.private_rt.*.id, count.index)}"
 }
@@ -94,20 +96,20 @@ resource "aws_route_table" "public_rt" {
 
 resource "aws_subnet" "public-subnet" {
   vpc_id                  = "${aws_vpc.default.id}"
-  count                   = "${length(var.azs[var.region])}"
+  count                   = "${var.az_count}"
   cidr_block              = "${cidrsubnet(cidrsubnet(var.cidr_block, 4, 2), 4, count.index)}"
-  availability_zone       = "${element(var.azs[var.region], count.index)}"
+  availability_zone       = "${data.aws_availability_zones.azs.names[count.index]}"
   map_public_ip_on_launch = false
 
   tags {
-    Name        = "public-${element(var.azs[var.region], count.index)}"
+    Name        = "private-${data.aws_availability_zones.azs.names[count.index]}"
     Project     = "${var.project}"
     Environment = "${var.environment}"
   }
 }
 
 resource "aws_route_table_association" "public_rta" {
-  count          = "${length(var.azs[var.region])}"
+  count          = "${var.az_count}"
   subnet_id      = "${element(aws_subnet.public-subnet.*.id,count.index)}"
   route_table_id = "${aws_route_table.public_rt.id}"
 }
