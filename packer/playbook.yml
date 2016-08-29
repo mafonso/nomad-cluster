@@ -14,6 +14,11 @@
   roles:
     - nat
 
+- hosts: bastion
+  become: yes
+  roles:
+    - bastion
+
 - hosts: consul 
   become: yes
   vars: 
