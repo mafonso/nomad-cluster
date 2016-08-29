@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_security_group" "bastion_sg" {
   name        = "bastion_sg"
   description = "instance_whitelist"
-  vpc_id      = "${module.vpc.vpc_id}"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 22
@@ -22,11 +22,21 @@ resource "aws_security_group" "bastion_sg" {
   }
 }
 
+data "atlas_artifact" "ami" {
+  name    = "acme/bastion"
+  type    = "amazon.image"
+  version = "latest"
+
+  metadata {
+    region = "${var.region}"
+  }
+}
+
 resource "aws_instance" "bastion" {
-  ami                         = "ami-31328842"
+  ami                         = "${data.atlas_artifact.ami.metadata_full.ami_id}"
   instance_type               = "t2.micro"
-  subnet_id                   = "${element(module.vpc.public_subnet_ids,1)}"
-  vpc_security_group_ids      = ["${aws_security_group.bastion_sg.id}", "${module.vpc.default_security_group_id}"]
+  subnet_id                   = "${element(var.subnets,1)}"
+  vpc_security_group_ids      = ["${aws_security_group.bastion_sg.id}", "${var.security_groups}"]
   associate_public_ip_address = "true"
   key_name                    = "${var.key_name}"
 

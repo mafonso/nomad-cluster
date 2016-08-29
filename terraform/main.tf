@@ -28,6 +28,19 @@ module "vpc" {
   key_name    = "${var.key_name}"
 }
 
+module "bastion" {
+  source = "modules/bastion"
+
+  project     = "${var.project}"
+  environment = "${var.environment}"
+  region      = "${var.region}"
+
+  vpc_id      = "${module.vpc.vpc_id}"
+  subnets     = "${module.vpc.public_subnet_ids}"
+  key_name    = "${var.key_name}"
+  security_groups      = "${module.vpc.default_security_group_id}"
+}
+
 module "consul" {
   source = "modules/asg-elb"
 
@@ -47,7 +60,3 @@ module "consul" {
   max_size         = 3
   desired_capacity = 3
 }
-
-
-
-
