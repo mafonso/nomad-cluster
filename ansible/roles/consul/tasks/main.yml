@@ -5,8 +5,6 @@
 
 - name: Configure consul agent
   template: src=agent.json.j2 dest=/etc/consul/conf.d/00-agent.json
-  notify:
-    - restart consul
   tags:
     - configure
 
