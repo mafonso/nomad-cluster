@@ -53,6 +53,10 @@ resource "aws_instance" "nat" {
   associate_public_ip_address = true
   source_dest_check           = false
 
+  root_block_device {
+    delete_on_termination = "true"
+  }
+
   tags {
     Name        = "${var.project}-${var.environment}-nat"
     Project     = "${var.project}"
