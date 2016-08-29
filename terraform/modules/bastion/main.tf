@@ -41,6 +41,9 @@ resource "aws_instance" "bastion" {
   key_name                    = "${var.key_name}"
 
   tags {
-    Name = "Bastion"
+    Name        = "${var.project}-${var.environment}-bastion"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 }

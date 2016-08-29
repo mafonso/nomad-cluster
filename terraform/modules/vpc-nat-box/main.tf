@@ -8,10 +8,10 @@ resource "aws_vpc" "default" {
   enable_dns_hostnames = true
 
   tags {
-    name        = "${var.project}-${var.environment}"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 }
 
@@ -19,10 +19,10 @@ resource "aws_internet_gateway" "default" {
   vpc_id = "${aws_vpc.default.id}"
 
   tags {
-    name        = "${var.project}-${var.environment}"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 }
 
@@ -85,10 +85,10 @@ resource "aws_route_table" "private_rt" {
   }
 
   tags {
-    name        = "${var.project}-${var.environment}-private"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}-private"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 }
 
@@ -107,10 +107,10 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags {
-    name        = "${var.project}-${var.environment}-public"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}-public"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 }
 

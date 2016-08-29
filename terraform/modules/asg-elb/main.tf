@@ -14,11 +14,11 @@ resource "aws_security_group" "sg_asg" {
   }
 
   tags {
-    name        = "${var.project}-${var.environment}"
-    role        = "${var.role}"
-    project     = "${var.project}"
-    environment = "${var.environment}"
-    managed_by  = "terraform"
+    Name        = "${var.project}-${var.environment}"
+    Role        = "${var.role}"
+    Project     = "${var.project}"
+    Environment = "${var.environment}"
+    Managed_by  = "terraform"
   }
 
   lifecycle {
