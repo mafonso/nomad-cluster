@@ -52,7 +52,7 @@ module "iam_profile" {
 }
 
 resource "aws_launch_configuration" "lc" {
-  name_prefix          = "${var.role}"
+  name_prefix          = "${var.role}-"
   image_id             = "${data.atlas_artifact.ami.metadata_full.ami_id}"
   instance_type        = "${var.instance_type}"
   key_name             = "${var.key_name}"
@@ -83,6 +83,12 @@ resource "aws_autoscaling_group" "asg" {
   health_check_type         = "${var.health_check_type}"
   force_delete              = "${var.force_delete}"
   vpc_zone_identifier       = ["${var.subnets}"]
+
+  tag {
+    key                 = "Name"
+    value               = "${var.project}-${var.environment}-${var.role}"
+    propagate_at_launch = true
+  }
 
   tag {
     key                 = "Environment"

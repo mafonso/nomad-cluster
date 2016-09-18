@@ -1,0 +1,4 @@
+nomad_version: 0.4.1
+
+nomad_server_enabled: null
+nomad_server_bootstrap_expect: null
