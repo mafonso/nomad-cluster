@@ -1,0 +1,16 @@
+---
+- include: install.yml
+  tags:
+    - install
+
+- name: Configure nomad agent (base) 
+  template: src=base.hcl.j2 dest=/etc/nomad/conf.d/base.hcl
+  tags:
+    - configure
+
+- name: Configure nomad agent (server) 
+  template: src=server.hcl.j2 dest=/etc/nomad/conf.d/server.hcl
+  tags:
+    - configure
+
+- meta: flush_handlers

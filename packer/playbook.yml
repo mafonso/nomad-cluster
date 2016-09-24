@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: yes
+  vars:
   pre_tasks:
     - name: gather ec2 facts
       action: ec2_facts
@@ -16,6 +17,9 @@
 
 - hosts: bastion
   become: yes
+  vars:
+    - consul_atlas_join: true
+    - consul_atlas_infrastructure: "acme/sandbox"
   roles:
     - bastion
 
@@ -23,10 +27,21 @@
   become: yes
   vars: 
     - consul_server: true
-    - consul_atlas_join: true
     - consul_web_ui: true
-    - consul_with_dnsmasq: true
     - consul_bootstrap_expect: 3
+    - consul_with_dnsmasq: true
+    - consul_atlas_join: true
     - consul_atlas_infrastructure: "acme/sandbox"
   roles:
     - consul
+
+- hosts: nomad 
+  become: yes
+  vars: 
+    - consul_atlas_join: true
+    - consul_atlas_infrastructure: "acme/sandbox"
+    - nomad_server_enabled: true
+    - nomad_server_bootstrap_expect: 3
+  roles:
+    - consul
+    - nomad

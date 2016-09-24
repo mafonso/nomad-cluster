@@ -13,7 +13,7 @@ resource "aws_s3_bucket" "config" {
   }
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -35,10 +35,10 @@ module "bastion" {
   environment = "${var.environment}"
   region      = "${var.region}"
 
-  vpc_id      = "${module.vpc.vpc_id}"
-  subnets     = "${module.vpc.public_subnet_ids}"
-  key_name    = "${var.key_name}"
-  security_groups      = "${module.vpc.default_security_group_id}"
+  vpc_id          = "${module.vpc.vpc_id}"
+  subnets         = "${module.vpc.public_subnet_ids}"
+  key_name        = "${var.key_name}"
+  security_groups = "${module.vpc.default_security_group_id}"
 }
 
 module "consul" {
@@ -48,10 +48,31 @@ module "consul" {
   project     = "${var.project}"
   environment = "${var.environment}"
   region      = "${var.region}"
-  key_name    = "${var.key_name}"
 
   vpc_id               = "${module.vpc.vpc_id}"
   subnets              = "${module.vpc.private_subnet_ids}"
+  key_name             = "${var.key_name}"
+  security_groups      = "${module.vpc.default_security_group_id}"
+  instance_type        = "t2.micro"
+  iam_instance_profile = "s3-config-bucket"
+
+  min_size         = 1
+  max_size         = 3
+  desired_capacity = 3
+}
+
+
+module "nomad" {
+  source = "modules/asg-elb"
+
+  role        = "nomad"
+  project     = "${var.project}"
+  environment = "${var.environment}"
+  region      = "${var.region}"
+
+  vpc_id               = "${module.vpc.vpc_id}"
+  subnets              = "${module.vpc.private_subnet_ids}"
+  key_name             = "${var.key_name}"
   security_groups      = "${module.vpc.default_security_group_id}"
   instance_type        = "t2.micro"
   iam_instance_profile = "s3-config-bucket"
