@@ -1,11 +1,11 @@
 [Unit]
 Description=Consul Agent
-Wants=basic.target
-After=basic.target network.target
+After=etc-environment.service
+Requires=cloud-config.target
+
 
 [Service]
 User=consul
-Ground=consul
 EnvironmentFile=/etc/environment
 ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul/conf.d >> /var/log/consul/agent.log
 

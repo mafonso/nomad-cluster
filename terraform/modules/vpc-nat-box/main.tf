@@ -137,3 +137,13 @@ resource "aws_route_table_association" "public_rta" {
   subnet_id      = "${element(aws_subnet.public-subnet.*.id,count.index)}"
   route_table_id = "${aws_route_table.public_rt.id}"
 }
+
+
+resource "aws_vpc_dhcp_options" "dns_resolver" {
+    domain_name_servers = "${concat(var.domain_name_servers,list(cidrhost(var.cidr_block, 2)))}"
+}
+
+resource "aws_vpc_dhcp_options_association" "dns_resolver" {
+    vpc_id = "${aws_vpc.default.id}"
+    dhcp_options_id = "${aws_vpc_dhcp_options.dns_resolver.id}"
+}

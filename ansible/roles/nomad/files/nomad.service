@@ -1,13 +1,14 @@
 [Unit]
 Description=Nomad Agent
-Wants=basic.target
-After=basic.target network.target
+After=etc-environment.service
+Requires=cloud-config.target
 
 [Service]
-User=consul
-Ground=consul
+User=nomad
 EnvironmentFile=/etc/environment
-ExecStart=/usr/local/bin/nomad agent -config-dir=/etc/nomad/conf.d >> /var/log/nomad/agent.log
+ExecStartPre=/usr/local/bin/generate_advertise.sh /etc/nomad/conf.d/advertise.hcl
+ExecStart=/usr/local/bin/nomad agent -config=/etc/nomad/conf.d >> /var/log/nomad/agent.log
+
 
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
