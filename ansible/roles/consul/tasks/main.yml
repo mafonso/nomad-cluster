@@ -12,8 +12,18 @@
   yum: name=dnsmasq state=latest
   when: consul_with_dnsmasq
 
-- name: configure dnsmasq
+- name: Configure dnsmasq
   template: src=dnsmasq.conf.j2 dest=/etc/dnsmasq.d/10-consul
+  when: consul_with_dnsmasq
+  tags:
+    - configure
+
+- name: Enable dnsmasq service
+  service: name=dnsmasq enabled=yes
+  when: consul_with_dnsmasq
+
+- name: resolv.conf to dnsmasq
+  lineinfile: dest=/etc/resolv.conf line="nameserver 127.0.0.1" insertafter='^search'
   when: consul_with_dnsmasq
   tags:
     - configure

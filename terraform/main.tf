@@ -26,6 +26,7 @@ module "vpc" {
   az_count    = 3
   cidr_block  = "${var.cidr_block}"
   key_name    = "${var.key_name}"
+  domain_name_servers = "${var.domain_name_servers}"
 }
 
 module "bastion" {

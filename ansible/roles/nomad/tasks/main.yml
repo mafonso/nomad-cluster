@@ -13,4 +13,7 @@
   tags:
     - configure
 
+- name: Copy nomad advertise conf generator
+  copy: src=generate_advertise.sh dest=/usr/local/bin owner=root group=root mode=0755
+
 - meta: flush_handlers

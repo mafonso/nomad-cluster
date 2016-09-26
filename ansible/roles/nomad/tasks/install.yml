@@ -6,7 +6,7 @@
   user: name=nomad home=/var/lib/nomad shell=/bin/false createhome=no
 
 - name: Ensure config directory
-  file: path=/etc/nomad/conf.d state=directory
+  file: path=/etc/nomad/conf.d state=directory owner=nomad
 
 - name: Ensure state directories
   file: path={{ item }} owner=nomad group=nomad state=directory

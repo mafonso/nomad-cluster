@@ -2,20 +2,11 @@
 region = "europe"
 
 # Persist data to a location that will survive a machine reboot.
-data_dir = "/opt/nomad/"
+data_dir = "/var/lib/nomad/"
 
 # Bind to all addresses so that the Nomad agent is available both on loopback
 # and externally.
 bind_addr = "0.0.0.0"
-
-# Advertise an accessible IP address so the server is reachable by other servers
-# and clients. The IPs can be materialized by Terraform or be replaced by an
-# init script.
-#advertise {
-#    http = "${self.ipv4_address}:4646"
-#    rpc = "${self.ipv4_address}:4647"
-#    serf = "${self.ipv4_address}:4648"
-#}
 
 # Ship metrics to monitor the health of the cluster and to see task resource
 # usage.
