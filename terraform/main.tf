@@ -20,12 +20,12 @@ resource "aws_s3_bucket" "config" {
 module "vpc" {
   source = "modules/vpc-nat-box"
 
-  project     = "${var.project}"
-  environment = "${var.environment}"
-  region      = "${var.region}"
-  az_count    = 3
-  cidr_block  = "${var.cidr_block}"
-  key_name    = "${var.key_name}"
+  project             = "${var.project}"
+  environment         = "${var.environment}"
+  region              = "${var.region}"
+  az_count            = 3
+  cidr_block          = "${var.cidr_block}"
+  key_name            = "${var.key_name}"
   domain_name_servers = "${var.domain_name_servers}"
 }
 
@@ -62,7 +62,6 @@ module "consul" {
   desired_capacity = 3
 }
 
-
 module "nomad" {
   source = "modules/asg-elb"
 
@@ -82,7 +81,6 @@ module "nomad" {
   max_size         = 3
   desired_capacity = 3
 }
-
 
 module "worker" {
   source = "modules/asg-elb"
