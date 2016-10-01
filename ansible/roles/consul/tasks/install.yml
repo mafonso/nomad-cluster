@@ -2,20 +2,20 @@
 - name: Install consul
   unarchive: src=https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip dest=/usr/local/bin creates=/usr/local/bin/consul copy=no
 
-- name: Ensure user
+- name: Create consul user
   user: name=consul home=/var/lib/consul shell=/bin/false createhome=no
 
-- name: Ensure config directory
+- name: Create consul config directory
   file: path=/etc/consul/conf.d state=directory
 
-- name: Ensure state directories
+- name: Create consul state directories
   file: path={{ item }} owner=consul group=consul state=directory
   with_items:
     - /var/lib/consul
     - /var/log/consul
 
-- name: Copy launch script
+- name: Copy systemd launch script
   copy: src=consul.service dest=/etc/systemd/system/consul.service
 
-- name: Enable consul service
+- name: Enable consul systemd service
   service: name=consul enabled=yes

@@ -6,7 +6,9 @@ Requires=cloud-config.target
 [Service]
 User=nomad
 EnvironmentFile=/etc/environment
+{% if nomad_server_enabled %}
 ExecStartPre=/usr/local/bin/generate_advertise.sh /etc/nomad/conf.d/advertise.hcl
+{% endif %}
 ExecStart=/usr/local/bin/nomad agent -config=/etc/nomad/conf.d >> /var/log/nomad/agent.log
 
 

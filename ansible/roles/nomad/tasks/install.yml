@@ -15,7 +15,14 @@
     - /var/log/nomad
 
 - name: Copy launch script
-  copy: src=nomad.service dest=/etc/systemd/system/nomad.service
+  template: src=nomad.service.j2 dest=/etc/systemd/system/nomad.service
+
+- name: Configure nomad agent (server)
+  template: src=server.hcl.j2 dest=/etc/nomad/conf.d/server.hcl
+  when: nomad_server_enabled
+  tags:
+    - configure
+
 
 - name: Enable nomad service
   service: name=nomad enabled=yes

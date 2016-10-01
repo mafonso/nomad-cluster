@@ -21,7 +21,7 @@
     - consul_atlas_join: true
     - consul_atlas_infrastructure: "acme/sandbox"
 
-- hosts: consul 
+- hosts: consul
   become: yes
   vars: 
     - consul_server: true
@@ -33,7 +33,7 @@
   roles:
     - consul
 
-- hosts: nomad 
+- hosts: nomad
   become: yes
   vars: 
     - consul_atlas_join: true
@@ -44,3 +44,14 @@
   roles:
     - consul
     - nomad
+
+- hosts: worker
+  become: yes
+  vars:
+    - consul_atlas_join: true
+    - consul_atlas_infrastructure: "acme/sandbox"
+    - consul_with_dnsmasq: true
+  roles:
+    - consul
+    - nomad
+    - docker

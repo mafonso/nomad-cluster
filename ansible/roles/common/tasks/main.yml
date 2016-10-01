@@ -1,24 +1,17 @@
 ---
-- name: install unzip
-  yum: name=unzip state=latest
 
-- name: install python-pip
-  yum: name=python-pip state=latest
+- name: Install list of packages - yum
+  yum: name={{item}} state=installed state=latest
+  with_items:
+       - unzip
+       - python-pip
 
-- name: pip install awscli
-  pip: name=awscli state=latest
+- name: Install list of packages - pip
+  pip: name={{item}} state=installed state=latest
+  with_items:
+       - awscli
+       - boto3
 
-- name: pip install boto3
-  pip: name=boto3 state=latest
+- name: set-environment
+  include: environment.yml
 
-- name: Install etc-environment service
-  copy: src=etc-environment.service dest=/etc/systemd/system/etc-environment.service
-
-- name: Install etc-environment target
-  copy: src=etc-environment.target dest=/etc/systemd/system/etc-environment.target
-
-- name: Copy etc-environment script
-  copy: src=etc-environment.py dest=/usr/local/bin/etc-environment.py mode=0755
-
-- name: Enable etc-environment service
-  service: name=etc-environment enabled=yes

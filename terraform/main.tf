@@ -82,3 +82,24 @@ module "nomad" {
   max_size         = 3
   desired_capacity = 3
 }
+
+
+module "worker" {
+  source = "modules/asg-elb"
+
+  role        = "worker"
+  project     = "${var.project}"
+  environment = "${var.environment}"
+  region      = "${var.region}"
+
+  vpc_id               = "${module.vpc.vpc_id}"
+  subnets              = "${module.vpc.private_subnet_ids}"
+  key_name             = "${var.key_name}"
+  security_groups      = "${module.vpc.default_security_group_id}"
+  instance_type        = "t2.micro"
+  iam_instance_profile = "s3-config-bucket"
+
+  min_size         = 1
+  max_size         = 3
+  desired_capacity = 3
+}
