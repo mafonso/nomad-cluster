@@ -22,6 +22,7 @@ module "vpc" {
 
   project             = "${var.project}"
   environment         = "${var.environment}"
+  organization        = "${var.organization}"
   region              = "${var.region}"
   az_count            = 3
   cidr_block          = "${var.cidr_block}"
@@ -45,10 +46,11 @@ module "bastion" {
 module "consul" {
   source = "modules/asg-elb"
 
-  role        = "consul"
-  project     = "${var.project}"
-  environment = "${var.environment}"
-  region      = "${var.region}"
+  role         = "consul"
+  project      = "${var.project}"
+  environment  = "${var.environment}"
+  organization = "${var.organization}"
+  region       = "${var.region}"
 
   vpc_id               = "${module.vpc.vpc_id}"
   subnets              = "${module.vpc.private_subnet_ids}"
@@ -57,7 +59,7 @@ module "consul" {
   instance_type        = "t2.micro"
   iam_instance_profile = "s3-config-bucket"
 
-  min_size         = 1
+  min_size         = 0
   max_size         = 3
   desired_capacity = 3
 }
@@ -65,10 +67,11 @@ module "consul" {
 module "nomad" {
   source = "modules/asg-elb"
 
-  role        = "nomad"
-  project     = "${var.project}"
-  environment = "${var.environment}"
-  region      = "${var.region}"
+  role         = "nomad"
+  project      = "${var.project}"
+  environment  = "${var.environment}"
+  organization = "${var.organization}"
+  region       = "${var.region}"
 
   vpc_id               = "${module.vpc.vpc_id}"
   subnets              = "${module.vpc.private_subnet_ids}"
@@ -77,7 +80,7 @@ module "nomad" {
   instance_type        = "t2.micro"
   iam_instance_profile = "s3-config-bucket"
 
-  min_size         = 1
+  min_size         = 0
   max_size         = 3
   desired_capacity = 3
 }
@@ -85,10 +88,12 @@ module "nomad" {
 module "worker" {
   source = "modules/asg-elb"
 
-  role        = "worker"
-  project     = "${var.project}"
-  environment = "${var.environment}"
-  region      = "${var.region}"
+  role         = "worker"
+  project      = "${var.project}"
+  environment  = "${var.environment}"
+  organization = "${var.organization}"
+
+  region = "${var.region}"
 
   vpc_id               = "${module.vpc.vpc_id}"
   subnets              = "${module.vpc.private_subnet_ids}"
@@ -97,7 +102,7 @@ module "worker" {
   instance_type        = "t2.micro"
   iam_instance_profile = "s3-config-bucket"
 
-  min_size         = 1
+  min_size         = 0
   max_size         = 3
-  desired_capacity = 3
+  desired_capacity = 0
 }

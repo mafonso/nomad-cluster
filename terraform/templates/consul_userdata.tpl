@@ -2,9 +2,13 @@
 environment:
   role: ${role}
   project: ${project}
+  organization: ${organization}
   environment: ${environment}
   consul_bootstrap_expect: 3
-  s3_config_bucket: acme-config
+  consul_encrypt: "null"
+  atlas_join: "true"
+  atlas_infrastructure: ${organization}/${environment}
+  s3_config_bucket: "acme-config"
 preserve_hostname: true
 runcmd:
   - instanceid=$(curl -s http://169.254.169.254/latest/meta-data/instance-id | tr -d 'i-')

@@ -8,12 +8,6 @@
   tags:
     - configure
 
-- name: Configure nomad agent (server)
-  template: src=server.hcl.j2 dest=/etc/nomad/conf.d/server.hcl
-  when: nomad_server_enabled
-  tags:
-    - configure
-
 - name: Copy nomad advertise conf generator
   copy: src=generate_advertise.sh dest=/usr/local/bin owner=root group=root mode=0755
   when: nomad_server_enabled

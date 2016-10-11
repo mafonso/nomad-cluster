@@ -17,30 +17,21 @@
 
 - hosts: bastion
   become: yes
-  vars:
-    - consul_atlas_join: true
-    - consul_atlas_infrastructure: "acme/sandbox"
 
 - hosts: consul
   become: yes
   vars: 
     - consul_server: true
     - consul_web_ui: true
-    - consul_bootstrap_expect: 3
     - consul_with_dnsmasq: true
-    - consul_atlas_join: true
-    - consul_atlas_infrastructure: "acme/sandbox"
   roles:
     - consul
 
 - hosts: nomad
   become: yes
   vars: 
-    - consul_atlas_join: true
-    - consul_atlas_infrastructure: "acme/sandbox"
-    - consul_with_dnsmasq: true
     - nomad_server_enabled: true
-    - nomad_server_bootstrap_expect: 3
+    - consul_with_dnsmasq: true
   roles:
     - consul
     - nomad
@@ -48,8 +39,6 @@
 - hosts: worker
   become: yes
   vars:
-    - consul_atlas_join: true
-    - consul_atlas_infrastructure: "acme/sandbox"
     - consul_with_dnsmasq: true
   roles:
     - consul

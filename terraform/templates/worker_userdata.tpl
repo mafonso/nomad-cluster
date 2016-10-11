@@ -2,7 +2,12 @@
 environment:
   role: ${role}
   project: ${project}
+  organization: ${organization}
   environment: ${environment}
+  consul_bootstrap_expect: 3
+  consul_encrypt: null
+  atlas_join: true
+  atlas_infrastructure: ${organization}/${environment}
   s3_config_bucket: acme-config
 preserve_hostname: true
 runcmd:

@@ -1,5 +1,7 @@
 variable "project" {}
 
+variable "organization" {}
+
 variable "environment" {}
 
 variable "region" {}

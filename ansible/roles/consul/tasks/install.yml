@@ -6,7 +6,7 @@
   user: name=consul home=/var/lib/consul shell=/bin/false createhome=no
 
 - name: Create consul config directory
-  file: path=/etc/consul/conf.d state=directory
+  file: path=/etc/consul/conf.d state=directory owner=consul
 
 - name: Create consul state directories
   file: path={{ item }} owner=consul group=consul state=directory
@@ -14,8 +14,8 @@
     - /var/lib/consul
     - /var/log/consul
 
-- name: Copy systemd launch script
-  copy: src=consul.service dest=/etc/systemd/system/consul.service
+- name: Copy launch script
+  template: src=consul.service.j2 dest=/etc/systemd/system/consul.service
 
 - name: Enable consul systemd service
   service: name=consul enabled=yes

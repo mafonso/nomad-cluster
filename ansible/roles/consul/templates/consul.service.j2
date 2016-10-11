@@ -7,6 +7,10 @@ Requires=cloud-config.target
 [Service]
 User=consul
 EnvironmentFile=/etc/environment
+ExecStartPre=/usr/local/bin/consul_atlas_config.sh /etc/consul/conf.d/20-atlas.json
+{% if consul_server %}
+ExecStartPre=/usr/local/bin/consul_server_config.sh /etc/consul/conf.d/30-server.json
+{% endif %}
 ExecStart=/usr/local/bin/consul agent -config-dir=/etc/consul/conf.d >> /var/log/consul/agent.log
 
 ExecReload=/bin/kill -HUP $MAINPID

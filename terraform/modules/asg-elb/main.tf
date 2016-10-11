@@ -36,9 +36,10 @@ data "template_file" "user_data" {
   template = "${file("templates/${var.role}_userdata.tpl")}"
 
   vars {
-    role        = "${var.role}"
-    project     = "${var.project}"
-    environment = "${var.environment}"
+    role         = "${var.role}"
+    project      = "${var.project}"
+    environment  = "${var.environment}"
+    organization = "${var.organization}"
   }
 }
 
