@@ -4,33 +4,54 @@
     - install
 
 - name: Configure consul agent
-  template: src=10-agent.json.j2 dest=/etc/consul/conf.d/10-agent.json
+  template:
+    src: 10-agent.json.j2
+    dest: /etc/consul/conf.d/10-agent.json
   tags:
     - configure
 
 - name: Copy consul atlas conf generator
-  copy: src=consul_atlas_config.sh dest=/usr/local/bin owner=root group=root mode=0755
+  copy:
+    src: consul_atlas_config.sh
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
 
 - name: Copy consul server conf generator
-  copy: src=consul_server_config.sh dest=/usr/local/bin owner=root group=root mode=0755
+  copy:
+    src: consul_server_config.sh
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
   when: consul_server
 
 - name: install dnsmasq
-  yum: name=dnsmasq state=latest
+  yum:
+    name: dnsmasq
+    state: latest
   when: consul_with_dnsmasq
 
 - name: Configure dnsmasq
-  template: src=dnsmasq.conf.j2 dest=/etc/dnsmasq.d/10-consul
+  template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/10-consul
   when: consul_with_dnsmasq
   tags:
     - configure
 
 - name: Enable dnsmasq service
-  service: name=dnsmasq enabled=yes
+  service:
+    name: dnsmasq
+    enabled: yes
   when: consul_with_dnsmasq
 
 - name: resolv.conf to dnsmasq
-  lineinfile: dest=/etc/resolv.conf line="nameserver 127.0.0.1" insertafter='^search'
+  lineinfile:
+    dest: /etc/resolv.conf
+    line: "nameserver 127.0.0.1"
+    insertafter: '^search'
   when: consul_with_dnsmasq
   tags:
     - configure

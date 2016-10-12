@@ -1,21 +1,40 @@
 ---
 - name: Install Nomad
-  unarchive: src=https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip dest=/usr/local/bin creates=/usr/local/bin/nomad copy=no
+  unarchive:
+    src: https://releases.hashicorp.com/nomad/{{ nomad_version }}/nomad_{{ nomad_version }}_linux_amd64.zip
+    dest: /usr/local/bin
+    creates: /usr/local/bin/nomad
+    copy: no
 
 - name: Ensure user
-  user: name=nomad home=/var/lib/nomad shell=/bin/false createhome=no
+  user:
+    name: nomad
+    home: /var/lib/nomad
+    shell: /bin/false
+    createhome: no
 
 - name: Ensure config directory
-  file: path=/etc/nomad/conf.d state=directory owner=nomad
+  file:
+    path: /etc/nomad/conf.d
+    state: directory
+    owner: nomad
 
 - name: Ensure state directories
-  file: path={{ item }} owner=nomad group=nomad state=directory
+  file:
+    path: "{{ item }}"
+    owner: nomad
+    group: nomad
+    state: directory
   with_items:
     - /var/lib/nomad
     - /var/log/nomad
 
 - name: Copy launch script
-  template: src=nomad.service.j2 dest=/etc/systemd/system/nomad.service
+  template:
+    src: nomad.service.j2
+    dest: /etc/systemd/system/nomad.service
 
 - name: Enable nomad service
-  service: name=nomad enabled=yes
+  service:
+    name: nomad
+    enabled: yes

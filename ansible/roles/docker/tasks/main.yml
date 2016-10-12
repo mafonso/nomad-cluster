@@ -7,9 +7,13 @@
     baseurl: https://yum.dockerproject.org/repo/main/centos/7/
     gpgkey: https://yum.dockerproject.org/gpg
     gpgcheck: yes
-  
+
 - name: install the latest version of Docker-engine
-  yum: name=docker-engine state=latest
+  yum:
+    name: docker-engine
+    state: latest
 
 - name: Enable docker-engine service
-  service: name=docker enabled=yes
+  service:
+    name: docker
+    enabled: yes

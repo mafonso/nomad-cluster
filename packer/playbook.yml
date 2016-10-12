@@ -9,8 +9,8 @@
         - always
   roles:
     - common
-    
-- hosts: nat 
+
+- hosts: nat
   become: yes
   roles:
     - nat
@@ -20,7 +20,7 @@
 
 - hosts: consul
   become: yes
-  vars: 
+  vars:
     - consul_server: true
     - consul_web_ui: true
     - consul_with_dnsmasq: true
@@ -29,7 +29,7 @@
 
 - hosts: nomad
   become: yes
-  vars: 
+  vars:
     - nomad_server_enabled: true
     - consul_with_dnsmasq: true
   roles:
