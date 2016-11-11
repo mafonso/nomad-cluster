@@ -3,14 +3,14 @@
 - name: Install list of packages - yum
   yum: name={{item}} state=installed state=latest
   with_items:
-       - unzip
-       - python-pip
+    - unzip
+    - python-pip
 
 - name: Install list of packages - pip
   pip: name={{item}} state=installed state=latest
   with_items:
-       - awscli
-       - boto3
+    - awscli
+    - boto3
 
 - name: set-environment
   include: environment.yml

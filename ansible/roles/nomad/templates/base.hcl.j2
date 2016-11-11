@@ -7,13 +7,3 @@ data_dir = "/var/lib/nomad/"
 # Bind to all addresses so that the Nomad agent is available both on loopback
 # and externally.
 bind_addr = "0.0.0.0"
-
-# Ship metrics to monitor the health of the cluster and to see task resource
-# usage.
-#telemetry {
-#    statsite_address = "${var.statsite}"
-#    disable_hostname = true
-#}
-
-# Enable debug endpoints.
-# enable_debug = true

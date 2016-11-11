@@ -22,8 +22,8 @@ if 'S3_CONFIG_BUCKET' in env_vars:
       if config_data.has_key('environment'):
         for k, v in config_data['environment'].iteritems():
           env_vars[k.upper()]=v
-          
-  except: 
+
+  except:
     None
   finally:
     os.remove('/tmp/config-data.yml') if os.path.exists('/tmp/config-data.yml') else None
@@ -31,4 +31,4 @@ if 'S3_CONFIG_BUCKET' in env_vars:
 
 with open('/etc/environment', 'w') as f:
   for k, v in env_vars.iteritems():
-    f.writelines("%s=%s\n" % (k, v))  
+    f.writelines("%s=%s\n" % (k, v))

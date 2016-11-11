@@ -1,6 +1,6 @@
 {
   "server": {{ consul_server|to_json }},
-  "ui": {{ consul_web_ui|to_json}},
+  "ui": {{ consul_web_ui|to_json }},
   "client_addr": {{ consul_client_address|to_json }},
   "data_dir": "/var/lib/consul",
   "log_level": {{ consul_log_level|to_json }},
